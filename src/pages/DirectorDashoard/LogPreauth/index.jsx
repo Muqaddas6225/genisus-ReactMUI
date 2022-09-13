@@ -86,16 +86,15 @@ const LogPreauth = () => {
                   onSwiper={(swiper , index) => console.log(swiper , index)}
                   onSlideChange={(value) => setsaveIndex(value.activeIndex)}
                >
-                  <SwiperSlide>
-                    <AuthorizationReport/>
-                  </SwiperSlide>
-                  
+
                   <SwiperSlide >
-                    <SpaiDataEngine/>
+                      <SpaiDataEngine/>
                   </SwiperSlide>
-                  
+                  <SwiperSlide>
+                      <AuthorizationReport/>
+                  </SwiperSlide>
                   <SwiperSlide  >
-                    <InsuranceCoverage/>
+                      <InsuranceCoverage/>
                   </SwiperSlide> 
                           
               </Swiper>
