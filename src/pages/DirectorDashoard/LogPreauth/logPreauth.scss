@@ -1,0 +1,46 @@
+.logPreauth-Section{
+    
+        .swiper-button-prev{
+            position: unset;
+            // right: 40%;
+            // right: auto;
+            // top: auto;
+            // left: auto;
+            width: 146px;
+            height: 55px;
+            color:#1A97DC;
+           &:after{
+            content: '' ;
+           } 
+           &:active{
+            color: white;
+           }
+    
+     }
+    
+        .swiper-button-next{
+            position: unset;
+            width: 146px;
+            height: 55px;
+            color:#1A97DC;
+           &:after{
+            content: '' ;
+           } 
+           &:active{
+            color: white;
+           }
+    }
+    
+}
+.logPreauth-Section{
+    @media screen and (max-width:'320px') {
+        .swiper-button-prev{
+            width: 70px;
+            height: 30px;
+        }
+        .swiper-button-next{
+            width: 70px;
+            height: 30px;
+        }
+    }
+}
