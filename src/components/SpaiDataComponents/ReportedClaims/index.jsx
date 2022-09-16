@@ -1,28 +1,20 @@
 import * as React from 'react';
 import { Table, TableBody, TableContainer, TableHead, Typography } from '@mui/material';
 
-import { Stack, Pagination, PaginationItem, Box } from '@mui/material';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-
-// import { TableBox, TableHeadCell, TableBodyCell, TableHeadRow, TableBodyRow, Status  } from 'Styles/Home';
+import { Stack, Pagination,Box } from '@mui/material';
 import { TableHeadCell, TableBodyCell, TableHeadRow, TableBodyRow, Status, CustomizedBox } from 'Styles/Home';
 import { PaginationText } from 'Styles/Home';
 import fileIcon from "../../../assets/images/file.png"
 
 const ReportedClaims = (props) => {
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
+    const paginationHandler = (event, value) => {
+        setPage(value);
+        setRowsPerPage(value * 5);
+      };
+    
 
     function createData(detectedDiagnosis, icd10, drg, date, status, file) {
         return { detectedDiagnosis, icd10, drg, date, status, file };
@@ -65,7 +57,7 @@ const ReportedClaims = (props) => {
                     </TableHead>
                     <TableBody>
                         {rows
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .slice((page - 1) * 5 , rowsPerPage)
                         .map((row, index) => (
                             <TableBodyRow key={index}>
                                 <TableBodyCell variant='p' component="th" scope="row">
@@ -109,25 +101,14 @@ const ReportedClaims = (props) => {
                 variant='h4'
                 component='h4'
             >
-                Showing {page} to {rowsPerPage} of {rows.length}
+                Showing {(page - 1) * 5} to {rowsPerPage > rows.length ? rows.length : rowsPerPage} of {rows.length}
             </PaginationText>
             <Pagination
-              // count={3}
-              rowsPerPageOptions={5}
-              // component="div"
-              dataLength = {rows.length}
-              count = {Math.ceil(rows.length/rowsPerPage)}
+              count = {Math.ceil(rows.length/5)}
               rowsPerPage={rowsPerPage}
               page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
               defaultPage={2}
-                renderItem={(page) => (
-                    <PaginationItem onClick={handleChangeRowsPerPage}
-                        components={{ previous: KeyboardDoubleArrowLeftIcon, next: KeyboardDoubleArrowRightIcon }}
-                        {...page}
-                    />
-                )}
+              onChange={(event , value) => paginationHandler(event , value) }
             />
         </Stack>
                 </TableContainer>

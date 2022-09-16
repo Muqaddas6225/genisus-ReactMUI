@@ -1,26 +1,22 @@
 import * as React from 'react';
 import { Table, TableBody, TableContainer, TableHead, Typography } from '@mui/material';
 
-import { Stack, Pagination, PaginationItem } from '@mui/material';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { Stack, Pagination} from '@mui/material';
 
 // import { TableBox, TableHeadCell, TableBodyCell, TableHeadRow, TableBodyRow, Status  } from 'Styles/Home';
 import { TableHeadCell, TableBodyCell, TableHeadRow, TableBodyRow, Status, CustomizedBox } from 'Styles/Home';
 import { PaginationText } from 'Styles/Home';
 
 const Medications = (props) => {
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        
+    const paginationHandler = (event, value) => {
+        setPage(value);
+        setRowsPerPage(value * 5);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
     function createData(name, ndc, date, status) {
         return { name, ndc, date, status };
     }
@@ -30,6 +26,8 @@ const Medications = (props) => {
         createData('Prinivil Lisinopril', '0006-0207-57', '3-20-2022', 'Inactive'),
         createData('Vitamin D', '64380-737-06', '2-10-2022', 'Active'),
         createData('Prinivil Lisinopril', '0006-0207-57', '4-20-2022', 'Inactive'),
+        createData('Vitamin D', '64380-737-06', '5-20-2022', 'Active'),
+        createData('Vitamin D', '64380-737-06', '5-20-2022', 'Active'),
         createData('Vitamin D', '64380-737-06', '5-20-2022', 'Active'),
     ];
 
@@ -53,7 +51,7 @@ const Medications = (props) => {
                         </TableHeadRow>
                     </TableHead>
                     <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        {rows.slice((page - 1) * 5 , rowsPerPage)
                         .map((row, index) => (
                             <TableBodyRow key={index}>
                                 <TableBodyCell variant='p' component="th" scope="row">
@@ -88,25 +86,14 @@ const Medications = (props) => {
                 variant='h4'
                 component='h4'
             >
-                Showing {page} to {rowsPerPage} of {rows.length}
+                Showing {(page - 1) * 5} to {rowsPerPage > rows.length ? rows.length : rowsPerPage} of {rows.length}
             </PaginationText>
             <Pagination
-              // count={3}
-              rowsPerPageOptions={5}
-              // component="div"
-              dataLength = {rows.length}
-              count = {Math.ceil(rows.length/rowsPerPage)}
+              count = {Math.ceil(rows.length/5)}
               rowsPerPage={rowsPerPage}
               page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
               defaultPage={2}
-                renderItem={(page) => (
-                    <PaginationItem onClick={handleChangeRowsPerPage}
-                        components={{ previous: KeyboardDoubleArrowLeftIcon, next: KeyboardDoubleArrowRightIcon }}
-                        {...page}
-                    />
-                )}
+              onChange={(event , value) => paginationHandler(event , value) }
             />
         </Stack>
             </TableContainer>

@@ -1,28 +1,21 @@
 import * as React from 'react';
 import { Table, TableBody, TableContainer, TableHead, Typography } from '@mui/material';
-import { Stack, Pagination, PaginationItem, Box } from '@mui/material';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { Stack, Pagination, Box } from '@mui/material';
 
-// import { TableBox, TableHeadCell, TableBodyCell, TableHeadRow, TableBodyRow, Status  } from 'Styles/Home';
 import { TableHeadCell, TableBodyCell, TableHeadRow, TableBodyRow, CustomizedBox } from 'Styles/Home';
 import { PaginationText } from 'Styles/Home';
 import warning from '../../../assets/images/warning.png'
 
 const LabTrend = (props) => {
 
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        
+    const paginationHandler = (event, value) => {
+        setPage(value);
+        setRowsPerPage(value * 5);
     };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
 
    
     function createData(description, result, date, warning) {
@@ -34,6 +27,8 @@ const LabTrend = (props) => {
         createData('Blood Pressure', '140/90 mmhg', '3-20-2022 10:10', warning),
         createData('Blood Sugar (Fasting)', '100mg/dl', '2-10-2022 10:10', warning),
         createData('Weight', '140/90 mmhg', '3-20-2022 10:10', warning),
+        createData('Blood Pressure', '100mg/dl', '2-10-2022 10:10', warning),
+        createData('Blood Pressure', '100mg/dl', '2-10-2022 10:10', warning),
         createData('Blood Pressure', '100mg/dl', '2-10-2022 10:10', warning),
     ];
 
@@ -57,7 +52,7 @@ const LabTrend = (props) => {
                         </TableHeadRow>
                     </TableHead>
                     <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        {rows.slice((page - 1) * 5 , rowsPerPage)
                         .map((row, index) => (
                             <TableBodyRow key={index}>
                                 <TableBodyCell variant='p' component="th" scope="row">
@@ -88,25 +83,14 @@ const LabTrend = (props) => {
                 variant='h4'
                 component='h4'
             >
-                Showing {page} to {rowsPerPage} of {rows.length}
+               Showing {(page - 1) * 5} to {rowsPerPage > rows.length ? rows.length : rowsPerPage} of {rows.length}
             </PaginationText>
             <Pagination
-              // count={3}
-              rowsPerPageOptions={5}
-              // component="div"
-              dataLength = {rows.length}
-              count = {Math.ceil(rows.length/rowsPerPage)}
+              count = {Math.ceil(rows.length/5)}
               rowsPerPage={rowsPerPage}
               page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
               defaultPage={2}
-                renderItem={(page) => (
-                    <PaginationItem onClick={handleChangeRowsPerPage}
-                        components={{ previous: KeyboardDoubleArrowLeftIcon, next: KeyboardDoubleArrowRightIcon }}
-                        {...page}
-                    />
-                )}
+              onChange={(event , value) => paginationHandler(event , value) }
             />
         </Stack>
             </TableContainer>

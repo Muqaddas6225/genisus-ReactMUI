@@ -10,17 +10,24 @@ import { PaginationText } from 'Styles/Home';
 const Validation = () => {
 
     
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  
+  const paginationHandler = (event, value) => {
+    setPage(value);
+    setRowsPerPage(value * 5);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+//   const handleChangePage = (event, newPage) => {
+//     alert('ok')
+//     setPage(newPage);
+//   };
+
+//   const handleChangeRowsPerPage = (event) => {
+//     setRowsPerPage(+event.target.value);
+//     setPage(0);
+//   };
 
 
     function createData(detectedDiagnosis, detectedIn, icd10, drg, date, status) {
@@ -64,7 +71,7 @@ const Validation = () => {
                         </TableHeadRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row, index) => (
+                        {rows.slice((page - 1) * 5 , rowsPerPage).map((row, index) => (
                             <TableBodyRow key={index}>
                                 <TableBodyCell variant='h4' component="th" scope="row">
                                     {row.detectedDiagnosis}
@@ -100,25 +107,16 @@ const Validation = () => {
                 variant='h4'
                 component='h4'
             >
-                Showing {page} to {rowsPerPage} of {rows.length}
+                 Showing {(page - 1) * 5} to {rowsPerPage > rows.length ? rows.length : rowsPerPage} of {rows.length}
             </PaginationText>
             <Pagination
-              // count={3}
-              rowsPerPageOptions={5}
-              // component="div"
-              dataLength = {rows.length}
-              count = {Math.ceil(rows.length/rowsPerPage)}
+             
+              count = {Math.ceil(rows.length/5)}
               rowsPerPage={rowsPerPage}
               page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+              onChange={(event , value) => paginationHandler(event , value) }
               defaultPage={2}
-                renderItem={(page) => (
-                    <PaginationItem onClick={handleChangeRowsPerPage}
-                        components={{ previous: KeyboardDoubleArrowLeftIcon, next: KeyboardDoubleArrowRightIcon }}
-                        {...page}
-                    />
-                )}
+              
             />
         </Stack>
             </TableContainer>

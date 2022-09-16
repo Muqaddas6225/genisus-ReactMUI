@@ -17,7 +17,6 @@ const Report = () => {
                      />
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                 {/* <ClinicalNotes /> */}
                   <ReportedClaims
                       title='Clinical Notes'
                       desc='- Medical Condition Detection'
@@ -25,11 +24,9 @@ const Report = () => {
                    
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    {/* <Medications /> */}
                     <Medications title= 'Medication'/>
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    {/* <RadiologyNotes /> */}
                     <Medications title= 'Radiology Notes'/>
                 </Grid>
                 <Grid item xs={12} lg={6}>
